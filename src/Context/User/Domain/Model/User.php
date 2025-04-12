@@ -8,7 +8,7 @@ final class User
 {
     public function __construct(
         private Uuid $id,
-        private string $email,
+        private Email $email,
         private string $hashedPassword
     ) {}
 
@@ -17,8 +17,13 @@ final class User
         return $this->id;
     }
 
-    public function getEmail(): string
+    public function getEmail(): Email
     {
         return $this->email;
+    }
+
+    public function getHashedPassword(): string
+    {
+        return $this->hashedPassword;
     }
 }

@@ -3,8 +3,10 @@
 namespace App\Context\User\Application\Handler;
 
 use App\Context\User\Application\Command\RegisterUserCommand;
+use App\Context\User\Domain\Event\UserRegisteredEvent;
 use App\Context\User\Domain\Repository\UserRepositoryInterface;
 use App\Context\User\Domain\Service\UserFactory;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class RegisterUserHandler
 {

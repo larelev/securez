@@ -22,3 +22,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Context\User\:
+        resource: '../src/Context/User/*'
+        exclude: '../src/Context/User/{Domain,Tests}'
+
+    App\Context\User\Infrastructure\Event\UserRegisteredSubscriber:
+        tags: [ 'kernel.event_subscriber' ]
+
+    Symfony\Component\Serializer\SerializerInterface: '@serializer'
+
