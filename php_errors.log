@@ -1,0 +1,18 @@
+[11-Apr-2025 18:13:29 Europe/Belgrade] PHP Fatal error:  Uncaught Symfony\Component\Dotenv\Exception\PathException: Unable to read the "\\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez/.env" environment file. in \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\dotenv\Dotenv.php:552
+Stack trace:
+#0 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\dotenv\Dotenv.php(106): Symfony\Component\Dotenv\Dotenv->doLoad()
+#1 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\dotenv\Dotenv.php(150): Symfony\Component\Dotenv\Dotenv->loadEnv()
+#2 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\runtime\SymfonyRuntime.php(113): Symfony\Component\Dotenv\Dotenv->bootEnv()
+#3 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\autoload_runtime.php(16): Symfony\Component\Runtime\SymfonyRuntime->__construct()
+#4 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\bin\console(15): require_once('...')
+#5 {main}
+  thrown in \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\dotenv\Dotenv.php on line 552
+[11-Apr-2025 18:13:29 Europe/Belgrade] PHP Fatal error:  Uncaught Symfony\Component\Dotenv\Exception\PathException: Unable to read the "\\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez/.env" environment file. in \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\dotenv\Dotenv.php:552
+Stack trace:
+#0 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\dotenv\Dotenv.php(106): Symfony\Component\Dotenv\Dotenv->doLoad()
+#1 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\dotenv\Dotenv.php(150): Symfony\Component\Dotenv\Dotenv->loadEnv()
+#2 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\runtime\SymfonyRuntime.php(113): Symfony\Component\Dotenv\Dotenv->bootEnv()
+#3 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\autoload_runtime.php(16): Symfony\Component\Runtime\SymfonyRuntime->__construct()
+#4 \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\bin\console(15): require_once('...')
+#5 {main}
+  thrown in \\WSL.LOCALHOST\UBUNTU-24.04\home\david\Sites\ChatGPT\SDK\php\securez\vendor\symfony\dotenv\Dotenv.php on line 552
