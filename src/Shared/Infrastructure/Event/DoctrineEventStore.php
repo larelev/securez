@@ -3,6 +3,7 @@
 namespace App\Shared\Infrastructure\Event;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Symfony\Component\Serializer\SerializerInterface;
 use App\Shared\Domain\Event\DomainEvent;
 
@@ -13,6 +14,9 @@ final class DoctrineEventStore
         private SerializerInterface $serializer
     ) {}
 
+    /**
+     * @throws Exception
+     */
     public function append(DomainEvent $event): void
     {
         $this->db->insert('event_store', [
@@ -24,6 +28,7 @@ final class DoctrineEventStore
 
     /**
      * @return DomainEvent[]
+     * @throws Exception
      */
     public function all(): array
     {

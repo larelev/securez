@@ -9,6 +9,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/doctrine-orm": "^4.1",
+        "api-platform/graphql": "^4.1",
         "api-platform/symfony": "*",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.14",
