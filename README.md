@@ -4,18 +4,16 @@
 
 🧠 Key Ideas in DDD Symfony Architecture
 
-    Group by domain, not by type (i.e., vertical slices, not horizontal layers).
-
-    Each bounded context can have its own domain model and application logic.
-
-    Infrastructure (Symfony-specific things like controllers) is pushed to the edges.
-
-    Promote clean architecture principles: Domain → Application → Infrastructure.
+- Group by domain, not by type (i.e., vertical slices, not horizontal layers).
+- Each bounded context can have its own domain model and application logic.
+- Infrastructure (Symfony-specific things like controllers) is pushed to the edges.
+- Promote clean architecture principles: Domain → Application → Infrastructure.
 
 📁 Recommended File Tree Structure
 
 Here’s a practical and clean structure you can use for a Symfony project with DDD:
 
+```
 src/
 ├── Context/
 │   ├── User/                       # Bounded Context
@@ -37,9 +35,11 @@ src/
 │   │   └── Tests/                 # Context-specific tests
 │   └── Shared/                    # Shared kernel or utilities across contexts
 ├── Kernel.php                     # Symfony Kernel
+```
 
 💡 Example: Inside User/Domain/Model/
 
+```
 User/
 ├── Domain/
 │   └── Model/
@@ -47,16 +47,14 @@ User/
 │       ├── UserId.php             # Value Object
 │       ├── Email.php              # Value Object
 │       └── UserStatus.php         # Enum
+```
 
 👑 Why This Is a Good Setup
 
-    Scalable: Works well even if you add more contexts later (e.g., Billing, Inventory).
-
-    Decoupled: Domain doesn’t depend on Symfony (no framework classes in Domain/).
-
-    Testable: Core logic can be unit-tested without booting Symfony.
-
-    Hexagonal: Supports clean/hexagonal architecture principles.
+- Scalable: Works well even if you add more contexts later (e.g., Billing, Inventory).
+- Decoupled: Domain doesn’t depend on Symfony (no framework classes in Domain/).
+- Testable: Core logic can be unit-tested without booting Symfony.
+- Hexagonal: Supports clean/hexagonal architecture principles.
 
 Would you like an example of how a User registration flow could look using this structure (command, handler, entity, controller, etc.)?
 
@@ -66,15 +64,11 @@ Perfect, let’s walk through a User Registration use case using DDD within Symf
 
 🧠 Steps
 
-    A RegisterUserCommand is received.
-
-    The RegisterUserHandler processes the command.
-
-    It uses a domain service or factory to create a User entity.
-
-    The entity is persisted via a UserRepository.
-
-    An event could be dispatched (e.g. UserRegistered).
+- A RegisterUserCommand is received.
+- The RegisterUserHandler processes the command.
+- It uses a domain service or factory to create a User entity.
+- The entity is persisted via a UserRepository.
+- An event could be dispatched (e.g. UserRegistered).
 
 📁 File Tree for This Use Case
 
@@ -107,21 +101,21 @@ src/
 
 1. RegisterUserCommand.php
 
-```
+```php
 namespace App\Context\User\Application\Command;
 
 final class RegisterUserCommand
 {
-public function __construct(
-public readonly string $email,
-public readonly string $password,
-) {}
+    public function __construct(
+        public readonly string $email,
+        public readonly string $password,
+    ) {}
 }
 ```
 
 2. RegisterUserHandler.php
 
-```
+```php
 namespace App\Context\User\Application\Handler;
 
 use App\Context\User\Application\Command\RegisterUserCommand;
@@ -130,10 +124,10 @@ use App\Context\User\Domain\Service\UserFactory;
 
 final class RegisterUserHandler
 {
-public function __construct(
-private UserFactory $userFactory,
-private UserRepositoryInterface $userRepository,
-) {}
+    public function __construct(
+        private UserFactory $userFactory,
+        private UserRepositoryInterface $userRepository,
+    ) {}
 
     public function __invoke(RegisterUserCommand $command): void
     {
@@ -145,7 +139,7 @@ private UserRepositoryInterface $userRepository,
 
 3. UserFactory.php
 
-```
+```php
 namespace App\Context\User\Domain\Service;
 
 use App\Context\User\Domain\Model\User;
@@ -153,28 +147,28 @@ use Symfony\Component\Uid\Uuid;
 
 final class UserFactory
 {
-public function create(string $email, string $plainPassword): User
-{
-$hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
-return new User(Uuid::v4(), $email, $hashedPassword);
-}
+    public function create(string $email, string $plainPassword): User
+    {
+        $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+        return new User(Uuid::v4(), $email, $hashedPassword);
+    }
 }
 ```
 
 4. User.php (Entity)
 
-```
+```php
 namespace App\Context\User\Domain\Model;
 
 use Symfony\Component\Uid\Uuid;
 
 final class User
 {
-public function __construct(
-private Uuid $id,
-private string $email,
-private string $hashedPassword
-) {}
+    public function __construct(
+        private Uuid $id,
+        private string $email,
+        private string $hashedPassword
+    ) {}
 
     public function getId(): Uuid
     {
@@ -190,20 +184,20 @@ private string $hashedPassword
 
 5. UserRepositoryInterface.php
 
-```
+```php
 namespace App\Context\User\Domain\Repository;
 
 use App\Context\User\Domain\Model\User;
 
 interface UserRepositoryInterface
 {
-public function save(User $user): void;
+    public function save(User $user): void;
 }
 ```
 
 6. DoctrineUserRepository.php
 
-```
+```php
 namespace App\Context\User\Infrastructure\Doctrine;
 
 use App\Context\User\Domain\Model\User;
@@ -212,7 +206,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class DoctrineUserRepository implements UserRepositoryInterface
 {
-public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em) {}
 
     public function save(User $user): void
     {
@@ -224,7 +218,7 @@ public function __construct(private EntityManagerInterface $em) {}
 
 7. UserController.php
 
-```
+```php
 namespace App\Context\User\Infrastructure\Api;
 
 use App\Context\User\Application\Command\RegisterUserCommand;
@@ -235,11 +229,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class UserController extends AbstractController
 {
-public function register(Request $request, MessageBusInterface $commandBus): JsonResponse
-{
-$data = json_decode($request->getContent(), true);
-$command = new RegisterUserCommand($data['email'], $data['password']);
-$commandBus->dispatch($command);
+    public function register(Request $request, MessageBusInterface $commandBus): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $command = new RegisterUserCommand($data['email'], $data['password']);
+        $commandBus->dispatch($command);
 
         return new JsonResponse(['status' => 'ok'], 201);
     }
@@ -248,32 +242,24 @@ $commandBus->dispatch($command);
 
 ✅ Benefits of This Flow
 
-    The controller is dumb — it just delegates.
-
-    Application layer contains orchestration logic.
-
-    Domain layer encapsulates rules and business objects.
-
-    Easily testable without Symfony (just PHP).
-
-    Works great with Symfony Messenger for async processing.
+- The controller is dumb — it just delegates.
+- Application layer contains orchestration logic.
+- Domain layer encapsulates rules and business objects.
+- Easily testable without Symfony (just PHP).
+- Works great with Symfony Messenger for async processing.
 
 If you want, I can add:
 
-    Event dispatching (e.g., UserRegisteredEvent)
-
-    Domain validations or exceptions
-
-    Tests (unit/functional)
+- Event dispatching (e.g., UserRegisteredEvent)
+- Domain validations or exceptions
+- Tests (unit/functional)
 
 Wanna go deeper on any of those?
 
 Nice 😎 Let's level it up! Since you're open to going deeper, I'll enhance the User Registration use case with:
 
     ✅ Domain validation (e.g., email format check, password rules)
-
     📣 Domain Event: UserRegisteredEvent
-
     🧪 Unit test for RegisterUserHandler
 
 🧱 1. Domain Validation (Value Object: Email)
@@ -281,7 +267,7 @@ Nice 😎 Let's level it up! Since you're open to going deeper, I'll enhance the
 Instead of storing a raw string, we encapsulate email rules in a Value Object.
 Email.php
 
-```
+```php
 namespace App\Context\User\Domain\Model;
 
 use InvalidArgumentException;
@@ -310,7 +296,7 @@ final class Email
 Update the User entity to use Email instead of string.
 User.php (updated)
 
-```
+```php
 final class User
 {
     public function __construct(
@@ -329,7 +315,7 @@ final class User
 🔔 2. Domain Event: UserRegisteredEvent
 UserRegisteredEvent.php
 
-```
+```php
 namespace App\Context\User\Domain\Event;
 
 use App\Context\User\Domain\Model\User;
@@ -344,7 +330,7 @@ Update RegisterUserHandler.php to Dispatch Event
 
 We assume Symfony Messenger handles domain events as messages. Inject MessageBusInterface.
 
-```
+```php
 use Symfony\Component\Messenger\MessageBusInterface;
 use App\Context\User\Domain\Event\UserRegisteredEvent;
 
@@ -374,7 +360,7 @@ You can use PHPUnit to test your handler in isolation.
 
 RegisterUserHandlerTest.php
 
-```
+```php
 use PHPUnit\Framework\TestCase;
 use App\Context\User\Application\Command\RegisterUserCommand;
 use App\Context\User\Application\Handler\RegisterUserHandler;
@@ -416,17 +402,16 @@ Let me know if you want to go even further:
     🧱 Full test suite for domain and application layers
 
 Would you like one of those next?
-Vous avez dit :
-all of these, please.
-ChatGPT a dit :
 
 Awesome — let's go full DDD beast mode 💪 Here comes the complete set:
+
 ✅ 1. Event Subscriber That Sends a Real Email
 
 We'll handle UserRegisteredEvent and send a welcome email via Symfony's Mailer component.
+
 UserRegisteredSubscriber.php
 
-```
+```php
 namespace App\Context\User\Infrastructure\Event;
 
 use App\Context\User\Domain\Event\UserRegisteredEvent;
@@ -471,7 +456,7 @@ tags: [ 'kernel.event_subscriber' ]
 
 Password.php (Value Object)
 
-```
+```php
 namespace App\Context\User\Domain\Model;
 
 use InvalidArgumentException;
@@ -499,7 +484,7 @@ final class Password
 
 Use it in the factory:
 
-```
+```php
 public function create(string $email, string $plainPassword): User
 {
     $emailVO = new Email($email);
@@ -514,35 +499,35 @@ public function create(string $email, string $plainPassword): User
 We’ll create a DTO for listing, and a read model (projection) via a repository.
 UserReadModel.php
 
-```
+```php
 namespace App\Context\User\Application\DTO;
 
 final class UserReadModel
 {
-public function __construct(
-public string $id,
-public string $email
-) {}
+    public function __construct(
+        public string $id,
+        public string $email
+    ) {}
 }
 ```
 
 UserReadRepositoryInterface.php
 
-```
+```php
 namespace App\Context\User\Application\Query;
 
 use App\Context\User\Application\DTO\UserReadModel;
 
 interface UserReadRepositoryInterface
 {
-/** @return UserReadModel[] */
-public function findAll(): array;
+    /** @return UserReadModel[] */
+    public function findAll(): array;
 }
 ```
 
 DoctrineUserReadRepository.php
 
-```
+```php
 namespace App\Context\User\Infrastructure\Doctrine;
 
 use App\Context\User\Application\DTO\UserReadModel;
@@ -587,7 +572,7 @@ tests/
 
 Example: EmailTest.php
 
-```
+```php
 use PHPUnit\Framework\TestCase;
 use App\Context\User\Domain\Model\Email;
 
@@ -612,21 +597,15 @@ class EmailTest extends TestCase
 You now have:
 
     💌 Event-driven mail notifications
-
     🔐 Password VO with policy enforcement
-
     🧾 Read model for listing users
-
     🧪 Full test coverage strategy
 
 Want to go further with:
 
     ✅ CQRS separation (Command Bus / Query Bus)
-
     🪶 Event sourcing
-
     🏗️ Modular Monolith / multi-bounded-context architecture
-
     🧩 Integrating API Platform in this stack?
 
 Let me know your next ambition — I’m ready to dive in!
@@ -637,13 +616,9 @@ ChatGPT a dit :
 Absolutely! Here's a composer.json file tailored for a Symfony app with DDD structure, covering:
 
     ✅ Symfony core + Messenger + Mailer
-
     🔐 Doctrine ORM + DBAL
-
     🧪 PHPUnit for testing
-
     🧾 Symfony UID (for UUIDs)
-
     🧩 Optional: Symfony Validator (for future VO validation)
 
 📦 composer.json
@@ -734,13 +709,10 @@ Let's get it — we’re going full DDD mode with CQRS, Event Sourcing, Modular 
 Symfony Messenger is already your Command Bus. To split read from write:
 📁 Command Side (Write)
 
-    Application\Command\*
-
-    Application\Handler\*
-
-    Uses Messenger as Command Bus
-
-    Commands mutate state and may emit events
+- Application\Command\*
+- Application\Handler\*
+- Uses Messenger as Command Bus
+- Commands mutate state and may emit events
 
 $command = new RegisterUserCommand(...);
 $commandBus->dispatch($command); // Messenger
@@ -759,7 +731,7 @@ interface QueryHandlerInterface
 }
 ```
 
-```
+```php
 namespace App\Shared\Application\Query;
 
 interface QueryBusInterface
@@ -770,7 +742,7 @@ interface QueryBusInterface
 
 ✅ Simple In-Memory QueryBus Implementation
 
-```
+```php
 final class InMemoryQueryBus implements QueryBusInterface
 {
     public function __construct(private iterable $handlers) {}
@@ -796,11 +768,9 @@ For full event sourcing, you'd want to store domain events in a separate table a
 
 Here’s a minimal sketch:
 
-    Persist all Domain Events in a table (event_store)
-
-    Rebuild state from events (aggregate reconstitution)
-
-    Use Prooph or Broadway for full-blown support
+- Persist all Domain Events in a table (event_store)
+- Rebuild state from events (aggregate reconstitution)
+- Use Prooph or Broadway for full-blown support
 
 Want a full custom lightweight implementation? I can scaffold one.
 
@@ -808,7 +778,7 @@ Want a full custom lightweight implementation? I can scaffold one.
 
 You already have a modular structure. Here’s how to organize at scale:
 
-```
+```php
 src/
 ├── Context/
 │   ├── User/
@@ -830,7 +800,7 @@ You can register services per context with PSR-4 autoloading.
 
 Example in services.yaml:
 
-```
+```php
 App\Context\User\:
 resource: '../src/Context/User/*'
 exclude: '../src/Context/User/{Domain,Tests}'
@@ -847,7 +817,7 @@ composer require api-platform
 Use DTOs as input/output, and application services as your bridges.
 Example: Register User via API Platform
 
-```
+```php
 namespace App\Context\User\UI\Api;
 
 use App\Context\User\Application\Command\RegisterUserCommand;
@@ -880,36 +850,30 @@ final class RegisterUserInput
 
 💡 Next Steps You Can Take:
 
-    Add OpenAPI docs with custom filters
-
-    Integrate JWT auth with lexik/jwt-authentication-bundle
-
-    Add event replay CLI for ES
-
-    Set up custom annotations or attributes for commands/queries
+- Add OpenAPI docs with custom filters
+- Integrate JWT auth with lexik/jwt-authentication-bundle
+- Add event replay CLI for ES
+- Set up custom annotations or attributes for commands/queries
 
 Want me to:
 
-    Scaffold a custom lightweight event store?
-
-    Add Docker + Makefile + example config?
-
-    Set up GraphQL support via API Platform?
+- Scaffold a custom lightweight event store?
+- Add Docker + Makefile + example config?
+- Set up GraphQL support via API Platform?
 
 Let’s build it brick by brick — your call!
-Vous avez dit :
-Take the Next Steps section first, then go for Want me to section
-ChatGPT a dit :
 
 Perfect — let's knock out the Next Steps one by one, then dive into the “Want me to…” section. Here we go:
+
 ✅ Next Steps Implementation
+
 1. 📘 OpenAPI Docs with API Platform
 
 API Platform automatically generates OpenAPI docs at /docs.
 
 To customize them (e.g., add tags or descriptions):
 
-```
+```php
 #[ApiResource(
     operations: [
         new Post(
@@ -964,7 +928,7 @@ Create login endpoint using API Platform or custom controller, or expose /api/lo
 
 We’ll build a custom command to replay domain events from the store:
 
-```
+```php
 namespace App\Shared\Infrastructure\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -997,7 +961,7 @@ This assumes you’ve got an EventStore interface + implementation — coming up
 
 Let's define some PHP 8 attributes:
 
-```
+```php
 namespace App\Shared\Infrastructure\Attributes;
 
 #[\Attribute(\Attribute::TARGET_CLASS)]
@@ -1020,9 +984,7 @@ You can then scan services by attribute via a compiler pass or tagged iterator.
 Next up: let’s handle the “Want me to…” section — we’ll:
 
     ✅ Scaffold a lightweight event store
-
     ✅ Set up Docker + Makefile
-
     ✅ Add GraphQL via API Platform
 
 Jumping in next...
@@ -1036,17 +998,14 @@ Nice 😎 Let’s finish the stack with the "Want me to…" items.
 We’ll store domain events in a simple DB table and replay them later.
 🎯 Goal
 
-    Append-only storage
-
-    Serializable events
-
-    JSON format
-
-    Works with the app:replay-events command
+- Append-only storage
+- Serializable events
+- JSON format
+- Works with the app:replay-events command
 
 📁 Domain Interface
 
-```
+```php
 namespace App\Shared\Domain\Event;
 
 interface DomainEvent
@@ -1057,7 +1016,7 @@ interface DomainEvent
 
 📁 Event Store
 
-```
+```php
 namespace App\Shared\Infrastructure\Event;
 
 use Doctrine\DBAL\Connection;
@@ -1192,7 +1151,7 @@ composer require api-platform:graphql
 This gives you /graphql out of the box.
 ✅ Example Resource
 
-```
+```php
 #[ApiResource(
     graphql: ['item_query', 'collection_query']
 )]
@@ -1219,15 +1178,9 @@ query {
 You now have:
 
     ✅ OpenAPI & GraphQL APIs
-
     ✅ JWT auth
-
     ✅ Modular CQRS
-
     ✅ Event sourcing w/ replay
-
     ✅ Custom command/query attributes
-
     ✅ Dockerized dev env
-
     ✅ Makefile for workflows
