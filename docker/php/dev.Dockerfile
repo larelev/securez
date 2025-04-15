@@ -15,15 +15,6 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/symfony
 
-# Copy Symfony project files into container
-COPY . .
-
-# Install PHP dependencies non-interactively
-RUN composer install --no-interaction --no-progress --optimize-autoloader
-
-# Set correct permissions for cache/logs (especially for Docker dev env)
-RUN mkdir -p var/cache var/log && chmod -R 777 var
-
 # Configure PHP-FPM
 RUN echo "pm.max_children = 5" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.start_servers = 2" >> /usr/local/etc/php-fpm.d/www.conf \
@@ -32,5 +23,4 @@ RUN echo "pm.max_children = 5" >> /usr/local/etc/php-fpm.d/www.conf \
 
 EXPOSE 9000
 
-# Default: run Symfony server (for dev), or replace with php-fpm in prod
 CMD ["php-fpm"]
