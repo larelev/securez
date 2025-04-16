@@ -52,7 +52,7 @@ services:
       - securez_backend
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./public:/var/www/symfony/public:ro
+      - .:/var/www/symfony:ro
 
 networks:
   securez-network:

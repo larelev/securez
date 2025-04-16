@@ -5,3 +5,14 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+#    enable_nelmio_api_doc: true
+
+#nelmio_api_doc:
+#    sandbox:
+#        accept_type: 'application/json'
+#        body_format:
+#            formats: ['json']
+#            default_format: 'json'
+#        request_format:
+#            formats:
+#                json: 'application/json'
