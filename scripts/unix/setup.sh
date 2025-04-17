@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-symfony console make:migration|yes
-symfony console doctrine:migrations:migrate|yes
-symfony console doctrine:fixtures:load|yes
+symfony console make:migration
+symfony console doctrine:migrations:migrate
+symfony console doctrine:fixtures:load
