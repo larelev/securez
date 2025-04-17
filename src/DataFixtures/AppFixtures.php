@@ -11,7 +11,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $password = hash('md5', uniqid(mt_rand(1, mt_getrandmax()), true));
-        $user = new User()
+        $user = (new User())
             ->setEmail('david@exameple.com')
             ->setPassword($password);
         $manager->persist($user);

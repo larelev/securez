@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
-symfony console make:migration
-symfony console doctrine:migrations:migrate
-symfony console doctrine:fixtures:load
+#set -a && source .env.local && docker compose -f docker-compose.yml exec php sh -c "
+#  cd /var/www/html;
+#  php bin/console make:migration;
+#  php bin/console doctrine:migrations:migrate;
+#  php bin/console doctrine:fixtures:load;
+#";
+
+php bin/console make:migration;
+php bin/console doctrine:migrations:migrate;
+php bin/console doctrine:fixtures:load;
