@@ -18,3 +18,7 @@ app.swagger:
     path: /api/doc.json
     methods: GET
     defaults: { _controller: nelmio_api_doc.controller.swagger }
+
+api.login:
+    path: /api/login
+    methods: ['POST']

@@ -1,18 +1,22 @@
 api_platform:
-    title: Hello API Platform
+    title: SecureZ API
     version: 1.0.0
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+        html: ['text/html']
+        graphql: ['application/graphql']
+    docs_formats:
+        jsonld: ['application/ld+json']
+        jsonopenapi: ['application/vnd.openapi+json']
+        html: ['text/html']
     defaults:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
-#    enable_nelmio_api_doc: true
-
-#nelmio_api_doc:
-#    sandbox:
-#        accept_type: 'application/json'
-#        body_format:
-#            formats: ['json']
-#            default_format: 'json'
-#        request_format:
-#            formats:
-#                json: 'application/json'
+        extra_properties:
+            standard_put: true
+    graphql:
+        enabled: true
+        graphiql:
+            enabled: true
