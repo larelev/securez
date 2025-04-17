@@ -26,3 +26,10 @@ services:
     App\State\UserPasswordHasher:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\Security\AuthenticationSuccessHandler:
+        arguments:
+            $cookieName: 'JWT'
+            $cookieSecure: '%kernel.environment% == "prod"'
+            $cookieDomain: null
+            $cookieExpire: 3600
