@@ -9,53 +9,79 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use OpenApi\Attributes as OA;
 
 class RegistrationController extends AbstractController
 {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private UserPasswordHasherInterface $passwordHasher,
+        private ValidatorInterface $validator
+    ) {}
+
     #[Route('/api/register', name: 'api_register', methods: ['POST'])]
     #[OA\Post(
         path: '/api/register',
         description: 'Register a new user',
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
+                required: ['email', 'password'],
                 properties: [
                     new OA\Property(property: 'email', type: 'string'),
-                    new OA\Property(property: 'password', type: 'string')
+                    new OA\Property(property: 'password', type: 'string', minLength: 6)
                 ]
             )
         ),
         responses: [
-            new OA\Response(response: 201, description: 'User created'),
+            new OA\Response(response: 201, description: 'User registered successfully'),
             new OA\Response(response: 400, description: 'Invalid input')
         ]
     )]
-
-    public function register(
-        Request $request,
-        UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface $entityManager
-    ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-
-        if (!$data || !isset($data['email']) || !isset($data['password'])) {
-            return $this->json(['error' => 'Missing required fields'], 400);
-        }
-
-        $user = new User();
-        $user->setEmail($data['email']);
-        $user->setRoles(['ROLE_USER']);
-
-        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
-        $user->setPassword($hashedPassword);
-
+    public function register(Request $request): JsonResponse
+    {
         try {
-            $entityManager->persist($user);
-            $entityManager->flush();
-        } catch (\Exception $e) {
-            return $this->json(['error' => 'Email already exists'], 400);
-        }
+            $data = json_decode($request->getContent(), true);
 
-        return $this->json(['message' => 'User created successfully'], 201);
+            dd($data);
+
+            if (!$data) {
+                return new JsonResponse(['error' => 'Invalid JSON'], 400);
+            }
+
+            if (empty($data['email']) || empty($data['password'])) {
+                return new JsonResponse(['error' => 'Email and password are required'], 400);
+            }
+
+            $user = new User();
+            $user->setEmail($data['email']);
+            $user->setPassword(
+                $this->passwordHasher->hashPassword($user, $data['password'])
+            );
+            $user->setRoles(['ROLE_USER']);
+
+            $errors = $this->validator->validate($user);
+            if (count($errors) > 0) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $errorMessages[] = $error->getMessage();
+                }
+                return new JsonResponse(['errors' => $errorMessages], 400);
+            }
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            return new JsonResponse(
+                ['message' => 'User registered successfully'],
+                201
+            );
+
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                ['error' => 'An error occurred during registration'],
+                500
+            );
+        }
     }
 }
