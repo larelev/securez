@@ -12,6 +12,10 @@ class SecurityController extends AbstractController
     #[Route('/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('api_docs');
+        }
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
@@ -19,6 +23,12 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
+    }
+
+    #[Route('/login_check', name: 'app_login_check', methods: ['POST'])]
+    public function check()
+    {
+        throw new \LogicException('This code should never be reached');
     }
 
     #[Route('/logout', name: 'app_logout')]
