@@ -33,3 +33,7 @@ services:
             $cookieSecure: '%kernel.environment% == "prod"'
             $cookieDomain: null
             $cookieExpire: 3600
+
+    App\Security\LoginFormAuthenticator:
+        autowire: true
+        autoconfigure: true

@@ -20,7 +20,10 @@
     "mkprod:win32": "pwsh scripts/windows/mkprod.ps1",
     "setup": "run-script-os",
     "setup:darwin:linux": "bash scripts/unix/setup.sh",
-    "setup:win32": "pwsh scripts/windows/setup.ps1"
+    "setup:win32": "pwsh scripts/windows/setup.ps1",
+    "composer": "run-script-os",
+    "composer:darwin:linux": "bash scripts/unix/composer.sh",
+    "composer:win32": "pwsh scripts/windows/composer.ps1"
   },
   "type": "module",
   "author": "",
