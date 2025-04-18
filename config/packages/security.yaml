@@ -16,6 +16,7 @@ security:
         api_public:
             pattern: ^/api/(login|register)
             stateless: true
+            security: false
             provider: app_user_provider
             json_login:
                 check_path: api_login
@@ -33,11 +34,12 @@ security:
             pattern: ^/
             lazy: true
             provider: app_user_provider
-            custom_authenticator: App\Security\LoginFormAuthenticator
             form_login:
                 login_path: app_login
-                check_path: app_login
+                check_path: app_login_check
                 enable_csrf: true
+                default_target_path: app_home
+                always_use_default_target_path: true
             logout:
                 path: app_logout
                 target: app_login
