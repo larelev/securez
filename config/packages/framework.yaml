@@ -1,22 +1,9 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    serializer:
-        enable_attributes: true
 
     # Note that the session will be started ONLY if you read or write from it.
-    session:
-        handler_id: null
-        cookie_secure: auto
-        cookie_samesite: lax
-        cookie_httponly: true
-        cookie_path: /
-        cookie_domain: null
-        cookie_lifetime: 0
-        gc_maxlifetime: 1440
-        gc_probability: 1
-        gc_divisor: 100
-
+    session: true
 
     #esi: true
     #fragments: true
