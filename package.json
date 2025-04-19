@@ -28,8 +28,10 @@
     "console:darwin:linux": "bash scripts/unix/console.sh",
     "console:win32": "pwsh scripts/windows/console.ps1",
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "watch": "vite build --watch"
   },
   "type": "module",
   "author": "",
@@ -67,7 +69,8 @@
     "prettier": "^3.2.5",
     "run-script-os": "^1.1.6",
     "style-loader": "^3.3.3",
-    "typescript": "~5.7.2",
+    "typescript": "^5.0.2",
+    "@types/node": "^20.0.0",
     "vite": "^6.3.1",
     "vue-tsc": "^2.2.8",
     "webpack": "^5.91.0",
