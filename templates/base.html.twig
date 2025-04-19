@@ -10,7 +10,10 @@
         {% endblock %}
     </head>
     <body>
-        <div id="app"></div>
+        <div id="app" 
+             data-csrf-token="{{ csrf_token('authenticate') }}"
+             data-user="{{ app.user ? app.user.email|json_encode|e('html_attr') : '' }}">
+        </div>
         {% block javascripts %}
             {{ vite_entry_script_tags('app') }}
         {% endblock %}
