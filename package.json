@@ -23,7 +23,10 @@
     "migrate:win32": "pwsh scripts/windows/migrate.ps1",
     "composer": "run-script-os",
     "composer:darwin:linux": "bash scripts/unix/composer.sh",
-    "composer:win32": "pwsh scripts/windows/composer.ps1"
+    "composer:win32": "pwsh scripts/windows/composer.ps1",
+    "console": "run-script-os --",
+    "console:darwin:linux": "bash scripts/unix/console.sh",
+    "console:win32": "pwsh scripts/windows/console.ps1"
   },
   "type": "module",
   "author": "",
