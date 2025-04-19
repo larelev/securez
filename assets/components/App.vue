@@ -17,63 +17,63 @@
         </div>
       </nav>
 
-      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="bg-white rounded-lg shadow-xl p-8">
-          <div class="max-w-3xl mx-auto">
-            <h1 class="text-3xl font-bold text-gray-900 mb-8">Welcome {{ username }}</h1>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 rounded-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Profile Information</h2>
-                <div class="space-y-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-500">Email</label>
-                    <div class="mt-1 text-gray-900">{{ email }}</div>
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-500">Roles</label>
-                    <div class="mt-1 flex gap-2">
-                      <span v-for="role in roles" :key="role" 
-                            class="px-2 py-1 text-xs font-medium rounded-full"
-                            :class="roleClasses(role)">
-                        {{ role }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="bg-white rounded-lg shadow-xl p-8">
+        <div class="max-w-3xl mx-auto">
+          <h1 class="text-3xl font-bold text-gray-900 mb-8">Welcome {{ username }}</h1>
 
-              <div class="bg-gray-50 rounded-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Security Status</h2>
-                <div class="space-y-4">
-                  <div class="flex items-center">
-                    <div class="w-4 h-4 rounded-full" :class="isVerified ? 'bg-green-500' : 'bg-red-500'"></div>
-                    <span class="ml-2 text-sm font-medium text-gray-700">
-                      {{ isVerified ? 'Email Verified' : 'Email Not Verified' }}
-                    </span>
-                  </div>
-                  <div class="flex items-center">
-                    <div class="w-4 h-4 rounded-full" :class="hasJWT ? 'bg-green-500' : 'bg-yellow-500'"></div>
-                    <span class="ml-2 text-sm font-medium text-gray-700">
-                      {{ hasJWT ? 'JWT Token Valid' : 'JWT Token Missing' }}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 rounded-lg p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-4">Profile Information</h2>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-500">Email</label>
+                  <div class="mt-1 text-gray-900">{{ email }}</div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-500">Roles</label>
+                  <div class="mt-1 flex gap-2">
+                    <span v-for="role in roles" :key="role"
+                          class="px-2 py-1 text-xs font-medium rounded-full"
+                          :class="roleClasses(role)">
+                      {{ role }}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+              <h2 class="text-xl font-semibold text-gray-900 mb-4">Security Status</h2>
+              <div class="space-y-4">
+                <div class="flex items-center">
+                  <div class="w-4 h-4 rounded-full" :class="isVerified ? 'bg-green-500' : 'bg-red-500'"></div>
+                  <span class="ml-2 text-sm font-medium text-gray-700">
+                    {{ isVerified ? 'Email Verified' : 'Email Not Verified' }}
+                  </span>
+                </div>
+                <div class="flex items-center">
+                  <div class="w-4 h-4 rounded-full" :class="hasJWT ? 'bg-green-500' : 'bg-yellow-500'"></div>
+                  <span class="ml-2 text-sm font-medium text-gray-700">
+                    {{ hasJWT ? 'JWT Token Valid' : 'JWT Token Missing' }}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </main>
+      </div>
+    </main>
     </template>
     <template v-else>
       <div class="max-w-md mx-auto pt-16 px-4">
         <div class="bg-white rounded-lg shadow-xl p-8">
           <h1 class="text-2xl font-bold text-center mb-8">{{ isRegistering ? 'Register' : 'Login' }}</h1>
-          
-          <LoginForm v-if="!isRegistering" 
+
+          <LoginForm v-if="!isRegistering"
                     :csrf-token="csrfToken"
                     @submit="handleLogin" />
-          <RegisterForm v-else 
+          <RegisterForm v-else
                        :csrf-token="csrfToken"
                        @submit="handleRegister" />
 
