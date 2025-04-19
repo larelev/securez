@@ -14,7 +14,7 @@ Get-Content ".env.local" | ForEach-Object {
 }
 
 # Run docker compose with dev configuration
-docker compose -f dev.compose.yaml exec php sh -c "
+docker compose -f compose.yaml exec php sh -c "
 cd /var/www/html;
 composer install;
 "
