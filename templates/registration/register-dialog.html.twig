@@ -1,0 +1,108 @@
+{% extends 'dialog-box.html.twig' %}
+
+{% block dialog_content %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-red-700">{{ flash_error }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    {% if app.user %}
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+            <div class="flex">
+                <div class="ml-3">
+                    <p class="text-sm text-blue-700">
+                        You are logged in as {{ app.user.userIdentifier }},
+                        <a href="{{ path('app_logout') }}" class="font-medium underline">Logout</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="text-center">
+        <h2 class="text-3xl font-extrabold text-gray-900">Create your account</h2>
+        <p class="mt-2 text-sm text-gray-600">
+            Or
+            <a href="{{ path('app_login') }}" class="font-medium text-primary hover:text-primary/80">
+                sign in to your account
+            </a>
+        </p>
+    </div>
+
+    {{ form_start(registrationForm, {'attr': {'class': 'mt-8 space-y-6'}}) }}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        {% if form_errors(registrationForm) %}
+            <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+                <div class="flex">
+                    <div class="ml-3">
+                        <p class="text-sm text-red-700">
+                            {{ form_errors(registrationForm) }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="rounded-md shadow-sm space-y-4">
+            <div>
+                {{ form_label(registrationForm.email, 'Email address', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(registrationForm.email, {
+                        'attr': {
+                            'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm',
+                            'placeholder': 'you@example.com'
+                        }
+                    }) }}
+                </div>
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                <div class="mt-1">
+                    {{ form_widget(registrationForm.plainPassword, {
+                        'attr': {
+                            'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm'
+                        }
+                    }) }}
+                </div>
+            </div>
+
+            <div class="flex items-center">
+                {{ form_widget(registrationForm.agreeTerms, {
+                    'attr': {
+                        'class': 'h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded'
+                    }
+                }) }}
+                {{ form_label(registrationForm.agreeTerms, 'I agree to the Terms of Service', {
+                    'label_attr': {
+                        'class': 'ml-2 block text-sm text-gray-900'
+                    }
+                }) }}
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" 
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md 
+                           shadow-lg text-sm font-semibold text-white 
+                           bg-gradient-to-r from-primary via-primary/80 to-secondary
+                           hover:from-primary/90 hover:via-primary/70 hover:to-secondary/90 
+                           transform transition-all duration-200 ease-in-out hover:scale-[1.02]
+                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
+                           active:scale-[0.98]">
+                Create Account
+            </button>
+        </div>
+    {{ form_end(registrationForm) }}
+{% endblock %}
