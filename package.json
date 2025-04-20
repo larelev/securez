@@ -26,7 +26,12 @@
     "composer:win32": "pwsh scripts/windows/composer.ps1",
     "console": "run-script-os --",
     "console:darwin:linux": "bash scripts/unix/console.sh",
-    "console:win32": "pwsh scripts/windows/console.ps1"
+    "console:win32": "pwsh scripts/windows/console.ps1",
+    "dev-server": "encore dev-server",
+    "dev": "vite",
+    "watch": "encore dev --watch",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "type": "module",
   "author": "",
@@ -35,12 +40,8 @@
     "human-writes": "^0.7.24"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/eslint-parser": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
-    "babel-loader": "^9.1.3",
-    "css-loader": "^7.1.1",
+    "autoprefixer": "^10.4.17",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-eslint": "^7.0.0",
     "eslint-config-prettier": "^9.1.0",
@@ -48,20 +49,14 @@
     "eslint-plugin-jsdoc": "^46.10.1",
     "eslint-plugin-node": "^11.1.0",
     "glob-parent": "^6.0.2",
-    "gulp": "^5.0.0",
-    "gulp-clean-css": "4.3.0",
-    "gulp-cli": "^3.0.0",
-    "html-bundler-webpack-plugin": "^3.11.0",
-    "html-webpack-plugin": "^5.6.0",
     "jsdom": "^24.0.0",
-    "mini-css-extract-plugin": "^2.9.0",
     "npm-run-all": "^4.1.5",
     "path": "^0.12.7",
+    "postcss": "^8.4.35",
     "prettier": "^3.2.5",
     "run-script-os": "^1.1.6",
-    "style-loader": "^3.3.3",
-    "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-stream": "^7.0.0"
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.0",
+    "vite-plugin-symfony": "^8.0.2"
   }
 }
