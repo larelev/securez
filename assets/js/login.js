@@ -19,13 +19,11 @@ class LoginForm {
 
                 const data = await response.json();
 
+                console.log({token: data.token ?? 'not provided' })
                 if (response.ok) {
                     // Store the token
-                    if (data.token && window.ui) {
-                        // Auto-authorize Swagger
-                        window.ui.preauthorizeApiKey("JWT", `Bearer ${token}`);
-                    }
-                
+                    localStorage.setItem('jwt_token', data.token);
+
                     // Redirect to home page
                     window.location.href = homeUrl;
                 } else {

@@ -9,10 +9,10 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script type="module">
-        import useLoginForm from '{{ asset('js/login.js') }}';
+{#    <script type="module">#}
+{#        import useLoginForm from '{{ asset('js/login.js') }}';#}
 
-        const loginForm = useLoginForm();
-        loginForm.login('/api');
-    </script>
+{#        const loginForm = useLoginForm();#}
+{#        loginForm.login('/api');#}
+{#    </script>#}
 {% endblock %}

@@ -11,7 +11,7 @@
         </p>
     </div>
 
-    <form id="loginForm" class="mt-8 space-y-6">
+    <form method="post" action="{{ path('app_login') }}" class="mt-8 space-y-6">
         {% if error %}
             <div class="bg-red-50 border-l-4 border-red-400 p-4">
                 <div class="flex">
@@ -24,28 +24,20 @@
             </div>
         {% endif %}
 
-        <div id="errorMessage" class="bg-red-50 border-l-4 border-red-400 p-4 hidden">
-            <div class="flex">
-                <div class="ml-3">
-                    <p class="text-sm text-red-700"></p>
-                </div>
-            </div>
-        </div>
-
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
         <div class="rounded-md shadow-sm space-y-4">
             <div>
                 <label for="username" class="block text-sm font-medium text-gray-700">Email address</label>
                 <div class="mt-1">
-                    <input id="username" name="email" type="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" value="{{ last_username }}">
+                    <input id="username" name="_username" type="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" value="{{ last_username }}">
                 </div>
             </div>
 
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                 <div class="mt-1">
-                    <input id="password" name="password" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
+                    <input id="password" name="_password" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
                 </div>
             </div>
         </div>
