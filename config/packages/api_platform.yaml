@@ -1,6 +1,10 @@
 api_platform:
-    title: SecureZ API
-    version: 1.0.0
+    title: 'SecureZ API'
+    description: 'A secure API platform'
+    version: '1.0.0'
+    show_webby: true
+    enable_swagger_ui: true
+    enable_re_doc: true
     formats:
         jsonld: ['application/ld+json']
         json: ['application/json']
@@ -21,3 +25,5 @@ api_platform:
             JWT:
                 name: Authorization
                 type: header
+        swagger_ui_extra_configuration:
+            persistAuthorization: true

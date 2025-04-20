@@ -7,3 +7,12 @@
     {% include "security/login-dialog.html.twig" %}
 </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="module">
+        import useLoginForm from '{{ asset('js/login.js') }}';
+
+        const loginForm = useLoginForm();
+        loginForm.login('/api');
+    </script>
+{% endblock %}

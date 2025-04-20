@@ -1,58 +1,65 @@
 {% extends 'dialog-box.html.twig' %}
 
 {% block dialog_content %}
+    <div class="text-center">
+        <h2 class="text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+        <p class="mt-2 text-sm text-gray-600">
+            Or
+            <a href="{{ path('app_register') }}" class="font-medium text-primary hover:text-primary/80">
+                create a new account
+            </a>
+        </p>
+    </div>
 
-<div class="text-center">
-    <h2 class="text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
-    <p class="mt-2 text-sm text-gray-600">
-        Or
-        <a href="{{ path('app_register') }}" class="font-medium text-primary hover:text-primary/80">
-            create a new account
-        </a>
-    </p>
-</div>
+    <form id="loginForm" class="mt-8 space-y-6">
+        {% if error %}
+            <div class="bg-red-50 border-l-4 border-red-400 p-4">
+                <div class="flex">
+                    <div class="ml-3">
+                        <p class="text-sm text-red-700">
+                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
 
-<form method="post" class="mt-8 space-y-6">
-    {% if error %}
-        <div class="bg-red-50 border-l-4 border-red-400 p-4">
+        <div id="errorMessage" class="bg-red-50 border-l-4 border-red-400 p-4 hidden">
             <div class="flex">
                 <div class="ml-3">
-                    <p class="text-sm text-red-700">
-                        {{ error.messageKey|trans(error.messageData, 'security') }}
-                    </p>
+                    <p class="text-sm text-red-700"></p>
                 </div>
             </div>
         </div>
-    {% endif %}
 
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-    <div class="rounded-md shadow-sm space-y-4">
-        <div>
-            <label for="username" class="block text-sm font-medium text-gray-700">Email address</label>
-            <div class="mt-1">
-                <input id="username" name="_username" type="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" value="{{ last_username }}">
+        <div class="rounded-md shadow-sm space-y-4">
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700">Email address</label>
+                <div class="mt-1">
+                    <input id="username" name="email" type="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm" value="{{ last_username }}">
+                </div>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <div class="mt-1">
+                    <input id="password" name="password" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
+                </div>
             </div>
         </div>
 
-        <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-            <div class="mt-1">
-                <input id="password" name="_password" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <input id="remember_me" name="_remember_me" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                <label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
             </div>
         </div>
-    </div>
 
-    <div class="flex items-center justify-between">
-        <div class="flex items-center">
-            <input id="remember_me" name="_remember_me" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
-            <label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
-        </div>
-    </div>
-
-    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-sm font-semibold text-white bg-gradient-to-r from-primary via-primary/80 to-secondary hover:from-primary/90 hover:via-primary/70 hover:to-secondary/90 transform transition-all duration-200 ease-in-out hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary active:scale-[0.98]">
-        Sign in
-    </button>
-</form>
-
+        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-sm font-semibold text-white bg-gradient-to-r from-primary via-primary/80 to-secondary hover:from-primary/90 hover:via-primary/70 hover:to-secondary/90 transform transition-all duration-200 ease-in-out hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary active:scale-[0.98]">
+            Sign in
+        </button>
+    </form>
 {% endblock %}
+

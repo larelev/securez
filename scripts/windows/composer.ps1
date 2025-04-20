@@ -1,6 +1,6 @@
 param(
-    [Parameter(Position=0)]
-    [string]$Target
+    [Parameter(ValueFromRemainingArguments=$true)]
+    [string[]]$Arguments
 )
 
 # Get current working directory
@@ -13,10 +13,12 @@ Get-Content ".env.local" | ForEach-Object {
     }
 }
 
-# Run docker compose with dev configuration
-docker compose -f compose.yaml exec php sh -c "
-cd /var/www/html;
-composer install;
-"
+# Join all arguments with spaces to create the command
+$consoleArgs = $Arguments -join ' '
+$CMD = "cd /var/www/html && composer $consoleArgs"
 
-exit 0
+Write-Host "Executing command: $CMD"
+
+# Run docker compose with dev configuration
+docker compose -f compose.yaml exec php sh -c "$CMD"
+exit $LASTEXITCODE
