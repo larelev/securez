@@ -7,7 +7,25 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(
+    operations: [
+        new Get(
+            security: "is_granted('ROLE_ADMIN') or object == user",
+            securityMessage: 'Only admins can access other users.',
+        ),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: 'Only admins can access the collection.',
+        ),
+    ],
+    normalizationContext: ['groups' => ['user:read']],
+    denormalizationContext: ['groups' => ['user:write']]
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -20,12 +38,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups(['user:read'])]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private array $roles = [];
 
     /**
@@ -35,6 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private bool $isVerified = false;
 
     public function getId(): ?int
@@ -117,7 +138,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isVerified;
     }
 
-    public function setIsVerified(bool $isVerified): static
+    public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
 

@@ -9,6 +9,10 @@
     {% endblock %}
 </head>
 <body class="h-full">
+<div id="app"
+     data-csrf-token="{{ csrf_token('authenticate') }}"
+     data-user="{{ app.user ? app.user.email|json_encode|e('html_attr') : '' }}">
+</div>
 <div class="min-h-full">
     {# Navigation #}
     <nav class="bg-gradient-to-r from-primary to-secondary">
